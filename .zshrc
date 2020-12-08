@@ -187,3 +187,55 @@ bindkey '^e' autosuggest-toggle
 unsetopt PROMPT_SP
 
 source /Users/sharad.mishra/.config/broot/launcher/bash/br
+
+alias "shopt='/usr/local/bin/shopt'"
+
+# History related stuff
+HISTFILESIZE=10000
+HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*"
+# don't put duplicate lines or lines starting with space 
+# in the history. See bash(1) for more options 
+HISTCONTROL=ignoreboth:erasedups 
+# append to the history file, don't overwrite it
+shopt -s histappend 
+# Write a multi line command in a single line
+shopt -s cmdhist
+
+# http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
+# remove duplicates while preserving input order
+function dedup {
+   #awk '! x[$0]++' $@
+   tac $@ | awk '! x[$0]++' | tac
+}
+
+# removes $HISTIGNORE commands from input
+function remove_histignore {
+   if [ -n "$HISTIGNORE" ]; then
+      # replace : with |, then * with .*
+      local IGNORE_PAT=`echo "$HISTIGNORE" | sed s/\:/\|/g | sed s/\*/\.\*/g`
+      # negated grep removes matches
+      grep -vx "$IGNORE_PAT" $@
+   else
+      cat $@
+   fi
+}
+
+# clean up the history file by remove duplicates and commands matching
+# $HISTIGNORE entries
+function history_cleanup {
+   local HISTFILE_SRC=~/.zsh_history
+   local HISTFILE_DST=/tmp/.$USER.zsh_history.clean
+   if [ -f $HISTFILE_SRC ]; then
+      \cp $HISTFILE_SRC $HISTFILE_SRC.backup
+      #Via gli spazi alla fine del file
+      LC_CTYPE=C sed -i '' "s/*$//" $HISTFILE_SRC
+      dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
+      \mv $HISTFILE_DST $HISTFILE_SRC
+      chmod go-r $HISTFILE_SRC
+   fi
+}
+
+# clean bash history when starting a new interactive shell
+case "$-" in
+    *i*) history_cleanup
+esac
