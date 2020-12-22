@@ -58,7 +58,8 @@ set softtabstop=4
 set shiftwidth=4
 
 " Use system clipboard
-set clipboard^=unnamed,unnamedplus
+" set clipboard^=unnamed,unnamedplus
+set clipboard+=unnamedplus
 
 " Make no noise
 " Use a visual bell instead of beeping.  The terminal code to display the visual bell is given with 't_vb'.  When no beep or flash is wanted, use:set vb t_vb=
@@ -111,6 +112,7 @@ nnoremap <tab> :bnext<CR>
 nnoremap <S-tab> :bprevious<CR>
 nnoremap Y y$
 nnoremap ; :
+nnoremap <NL> i<CR><ESC>
 inoremap jj <Esc>
 inoremap jk <Esc>
 inoremap kj <Esc>
@@ -306,3 +308,7 @@ cnoremap hterm :split term://zsh
 
 cnoremap vterm :vsplit term://zsh
 vmap <C-c> y:call SendViaOSC52(getreg('"'))<cr>
+
+"########################################## wipeout all registers ########################################## 
+command! Wipereg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
+" e.g. :WipeReg

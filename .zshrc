@@ -122,15 +122,22 @@ bindkey -v
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias next='cd ~/Documents/ix/hubble/next'
 alias hotfix='cd ~/Documents/ix/hubble/hotfix'
-alias dev='ssh hubble-dev@10.5.57.222'
+# alias dev='ssh hubble-dev@10.5.57.222'
 export JAVA_HOME=$(/usr/libexec/java_home)
 export SPARK_HOME=/Users/sharad.mishra/Library/spark/spark-2.4.4-bin-hadoop2.7
 export POLYNOTE_HOME=/Users/sharad.mishra/Library/polynote
 export HADOOP_HOME=/Users/sharad.mishra/Library/hadoop/hadoop-2.7.3
 export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HADOOP_HOME/lib/native
-export PATH=$PATH:$JAVA_HOME/bin:$SPARK_HOME/bin:$POLYNOTE_HOME/bin:$LD_LIBRARY_PATH:$HADOOP_HOME/bin:~/ansible/bin:/Users/sharad.mishra/mysqlrouter/mysql-router-8.0.22-macos10.15-x86_64/bin
+export PATH=$PATH:$JAVA_HOME/bin:$SPARK_HOME/bin:$POLYNOTE_HOME/bin:$LD_LIBRARY_PATH:$HADOOP_HOME/bin:~/ansible/bin:/Users/sharad.mishra/mysqlrouter/mysql-router-8.0.22-macos10.15-x86_64/bin:/usr/local/go/bin
+# :$(go env GOPATH)/bin
 export HADOOP_OPTS="$HADOOP_OPTS -Djava.library.path=$HADOOP_HOME/lib/native"
+export GOPATH=$HOME/go
+export GOROOT=/usr/local/go
+export GOPRIVATE=*.indexexchange.com
+export GOPROXY=https://proxy.golang.org
+export GOSUMDB=off
+export GO111MODULE=on
 alias hstart="${HADOOP_HOME}/sbin/start-dfs.sh;${HADOOP_HOME}/sbin/start-yarn.sh"
 alias hstop="${HADOOP_HOME}/sbin/stop-dfs.sh;${HADOOP_HOME}/sbin/stop-yarn.sh"
 alias python="python3"
